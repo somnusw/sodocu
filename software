@@ -1,0 +1,474 @@
+＃包含 “ pch.h ”
+＃包括 < iostream的>
+＃包括 < stdio.h中>
+＃包括 < stdlib.h中>
+// 4996是为了提醒fopen，fclose，fscanf函数不安全的
+＃实用警告（禁用：4996）
+使用 名称空间 std ;
+int  write（int x，int y）;
+ 内部int（int x，int y）;
+ 外部int（int x，int y）;
+无效 检查（）;
+//记录棋盘上的标记点
+布尔符号[ 10 ] [ 10 ] [ 10 ];
+//记录标记点的可能剩余个数
+int sign_count [ 10 ] [ 10 ];
+//记录棋盘
+int Checkerboard [ 10 ] [ 10 ];
+//记录类型
+INT类型;
+int small_sign [ 10 ];
+//用于记录是否有变化
+布尔值变化
+国际象棋数;
+//重置棋盘和标记
+无效 重置（）
+{
+	对于（int i = 1 ; i <type + 1 ; i ++）
+	{
+		对于（int j = 1 ; j <type + 1 ; j ++）
+		{
+			//假设每个位置都有类型种可能
+			sign_count [i] [j] =类型；
+			//每个位置都是空
+			棋盘格[i] [j] = 0 ;
+			//每个位置未曾填写
+			sign [i] [j] [ 0 ] = false ;
+			//假设每个位置的类型种可能都是可实现的
+			对于（int k = 1 ; k <type + 1 ; k ++）
+			{
+				sign [i] [j] [k] = true ;
+			}
+		}
+	}
+	回报 ;
+}
+//填入确定值
+int  写（int x，int y）
+{
+	//这个位置标记为存在数字
+	变化= true ;
+	国际象棋数-;
+	符号[x] [y] [ 0 ] = true ;
+	sign_count [x] [y] = 0 ;
+	//填入数字
+	对于（int i = 1 ; i <type + 1 ; i ++）
+	{
+		如果（sign [x] [y] [i]）
+		{
+			棋盘格[x] [y] = i;
+			休息 ;
+		}
+	}
+	/ * //输出更改的位置和新棋盘
+	cout << x <<''<< y <<'\ n';
+	对于（int i = 1; i <type + 1; i ++）
+	{
+		对于（int j = 1; j <type + 1; j ++）
+		{
+			cout << checkerboard [i] [j] <<'';
+		}
+		cout <<'\ n';
+	}
+	//输出每个位置的可能性
+	cout <<'\ n'<<“可能性：\ n”;
+	对于（int i = 1; i <type + 1; i ++）
+	{
+		对于（int j = 1; j <type + 1; j ++）
+		{
+			cout << sign_count [i] [j] <<'';
+		}
+		cout <<'\ n';
+	}
+	cout <<'\ n'; * /
+	外（x，y）;
+	返回 0 ;
+}
+//相应所有空缺的可能性（位置上还没有数字）
+//此时是排除所在位置的可能
+ 内部int（int x，int y）
+{
+	//排除横初步可能
+	INT  删除 ;
+	对于（int i = 1 ; i <type + 1 ; i ++）
+	{
+		//如果检测位置存在数
+		如果（sign [x] [i] [ 0 ]）
+		{
+			删除 =棋盘格[x] [i];
+			//则这个空位不能出现相同数字
+			//防止sign_count被误认为，前面先判断是不是已经变否了，未变否才变否
+			如果（sign [x] [y] [ 删除 ]）
+			{
+				sign [x] [y] [ remove ] = false ;
+				//可能 -1
+				sign_count [x] [y]-;
+			}
+			if（sign_count [x] [y] == 1 &&！sign [x] [y] [ 0 ]）
+			{
+				写（x，y）;
+				返回 0 ;
+			}
+		}
+	}
+	对于（int i = 1 ; i <type + 1 ; i ++）
+	{
+		如果（sign [i] [y] [ 0 ]）
+		{
+			删除 =棋盘格[i] [y];
+			如果（sign [x] [y] [ 删除 ]）
+			{
+				sign [x] [y] [ remove ] = false ;
+				sign_count [x] [y]-;
+			}
+			if（sign_count [x] [y] == 1 &&！sign [x] [y] [ 0 ]）
+			{
+				写（x，y）;
+				返回 0 ;
+			}
+		}
+	}
+	//宫格判断
+	if（类型== 4 ||类型== 6 ||类型== 8 ||类型== 9）
+	{
+		int beginx，beginy；
+		int xplus，yplus;
+		开关（类型）
+		{
+		情况 4：
+			xplus = 2 ;
+			yplus = 2；
+			休息 ;
+		情况 6：
+			xplus = 2 ;
+			yplus = 3；
+			休息 ;
+		情况 8：
+			xplus = 4 ;
+			yplus = 2；
+			休息 ;
+		情况 9：
+			xplus = 3 ;
+			yplus = 3；
+			休息 ;
+		}
+		beginx =（（x- 1）/ xplus）* xplus + 1 ;
+		beginy =（（y- 1）/ yplus）* yplus + 1 ;
+		为（int i = beginx; i <beginx + xplus; i ++）
+		{
+			for（int j =初学者; j <初学者+ yplus; j ++）
+			{
+				如果（sign [i] [j] [ 0 ]）
+				{
+					如果（sign [x] [y] [（checkerboard [i] [j]）]）
+					{
+						sign [x] [y] [（checkerboard [i] [j]）] = false ;
+						sign_count [x] [y]-;
+					}
+					if（sign_count [x] [y] == 1 &&！sign [x] [y] [ 0 ]）
+					{
+						写（x，y）;
+						返回 0 ;
+					}
+				}
+			}
+		}
+	}
+	//通过上面的判断，如果该位置只剩下一种可能性，那么执行write（）
+	返回 0 ;
+}
+//删除所填位置的横纵九宫格所有同数可能性（位置上刚填入数字）
+//此时是替换所填位置的横纵九宫格的其他位置可能
+ 外部int（int x，int y）
+{
+	// remove是当前位置填入的数字
+	int  remove =棋盘格[x] [y];
+	对于（int i = 1 ; i <type + 1 ; i ++）
+	{
+		如果（！sign [x] [i] [ 0 ] &&符号[x] [i] [ 删除 ]）
+		{
+			sign [x] [i] [ remove ] = false ;
+			sign_count [x] [i]-;
+			如果（sign_count [x] [i] == 1 &&！sign [x] [i] [ 0 ]）
+			{
+				写（x，i）;
+			}
+		}
+	}
+	对于（int i = 1 ; i <type + 1 ; i ++）
+	{
+		如果（！sign [i] [y] [ 0 ] &&符号[i] [y] [ 删除 ]）
+		{
+			sign [i] [y] [ remove ] = false ;
+			sign_count [i] [y]-;
+			if（sign_count [i] [y] == 1 &&！sign [i] [y] [ 0 ]）
+			{
+				写（i，y）;
+			}
+		}
+	}
+	//宫格判断
+	if（类型== 4 ||类型== 6 ||类型== 8 ||类型== 9）
+	{
+		int beginx，beginy；
+		int xplus，yplus;
+		开关（类型）
+		{
+		情况 4：
+			xplus = 2 ;
+			yplus = 2；
+			休息 ;
+		情况 6：
+			xplus = 2 ;
+			yplus = 3；
+			休息 ;
+		情况 8：
+			xplus = 4 ;
+			yplus = 2；
+			休息 ;
+		情况 9：
+			xplus = 3 ;
+			yplus = 3；
+			休息 ;
+		}
+		beginx =（（x- 1）/ xplus）* xplus + 1 ;
+		beginy =（（y- 1）/ yplus）* yplus + 1 ;
+		为（int i = beginx; i <beginx + xplus; i ++）
+		{
+			for（int j =初学者; j <初学者+ yplus; j ++）
+			{
+				如果（！sign [i] [j] [ 0 ] &&符号[i] [j] [ 删除 ]）
+				{
+					sign [i] [j] [ remove ] = false ;
+					sign_count [i] [j]-;
+					if（sign_count [i] [j] == 1 &&！sign [i] [j] [ 0 ]）
+					{
+						写（i，j）;
+					}
+				}
+			}
+		}
+	}
+	返回 0 ;
+}
+无效 检查（）
+{
+	//检查每一横
+	对于（int i = 1 ; i <type + 1 ; i ++）
+	{
+		对于（int j = 1 ; j <type + 1 ; j ++）
+		{
+			small_sign [j] = 0 ;
+		}
+		对于（int j = 1 ; j <type + 1 ; j ++）
+		{
+			如果（！sign [i] [j] [ 0 ]）
+			{
+				对于（int k = 1 ; k <type + 1 ; k ++）
+				{
+					如果（sign [i] [j] [k]）
+					{
+						small_sign [k] ++;
+					}
+				}
+			}
+		}
+		对于（int k = 1 ; k <type + 1 ; k ++）
+		{
+			如果（small_sign [k] == 1）
+			{
+				对于（int j = 1 ; j <type + 1 ; j ++）
+				{
+					如果（sign [i] [j] [k] &&！sign [i] [j] [ 0 ]）
+					{
+						//这个位置标记为存在数字
+						国际象棋数-;
+						变化= true ;
+						sign [i] [j] [ 0 ] = true ;
+						sign_count [i] [j] = 0 ;
+						棋盘格[i] [j] = k;
+						外（i，j）;
+					}
+				}
+			}
+		}
+	}
+	//检查每一纵
+	对于（int j = 1 ; j <type + 1 ; j ++）
+	{
+		对于（int i = 1 ; i <type + 1 ; i ++）
+		{
+			small_sign [i] = 0 ;
+		}
+		对于（int i = 1 ; i <type + 1 ; i ++）
+		{
+			如果（！sign [i] [j] [ 0 ]）
+			{
+				对于（int k = 1 ; k <type + 1 ; k ++）
+				{
+					如果（sign [i] [j] [k]）
+					{
+						small_sign [k] ++;
+					}
+				}
+			}
+		}
+		对于（int k = 1 ; k <type + 1 ; k ++）
+		{
+			如果（small_sign [k] == 1）
+			{
+				对于（int i = 1 ; i <type + 1 ; i ++）
+				{
+					如果（sign [i] [j] [k] &&！sign [i] [j] [ 0 ]）
+					{
+						//这个位置标记为存在数字
+						国际象棋数-;
+						变化= true ;
+						sign [i] [j] [ 0 ] = true ;
+						sign_count [i] [j] = 0 ;
+						棋盘格[i] [j] = k;
+						外（i，j）;
+					}
+				}
+			}
+		}
+	}
+}
+int  main（int argc，char * argv []）
+{
+	int n;
+	文件 * fp1;
+	文件 * fp2;
+	类型= atoi（argv [ 2 ]）;
+	n = atoi（argv [ 4 ]）;
+	char * InputName = argv [ 6 ];
+	char * OutputName = argv [ 8 ];
+	char * InputName = NULL ;
+	char * OutputName = NULL ;
+	字符串a = “ -m ”，b = “ -n ”，c = “ -i ”，d = “ -o ” ;
+	对于（int i = 1 ; i <argc; i ++）
+	{
+		如果（argv [i] == a）
+		{
+			类型= argv [++ i] [ 0 ]- ' 0 ' ;
+		}
+		否则， 如果（argv [i] == b）
+		{
+			n = argv [++ i] [ 0 ]- ' 0 ' ;
+		}
+		否则， 如果（argv [i] == c）
+		{
+			InputName = argv [++ i];
+		}
+		否则， 如果（argv [i] == d）
+		{
+			OutputName = argv [++ i];
+		}
+	}
+	//类型= atoi（argv [2]）;
+	// n = atoi（argv [4]）;
+	// char * InputName = argv [6];
+	// char * OutputName = argv [8];
+	//以预设方式打开文件
+	fp1 = fopen（InputName，“ r ”）;
+	if（fp1 == NULL）//
+		返回 - 1 ;
+	// fscanf（fp1，“％d％d”，＆type，＆n）;
+	//打开output.txt，并立即关闭，意义为清空文本内容
+	fp2 = fopen（OutputName，“ w ”）;
+	if（fp2 == NULL）//
+		返回 - 1 ;
+	fclose（fp2）;
+	而（n> 0）
+	{
+		//重置棋盘
+		重置（）;
+		//输入棋盘
+		对于（int i = 1 ; i <type + 1 ; i ++）
+		{
+			对于（int j = 1 ; j <type + 1 ; j ++）
+			{
+				// cin >> Checkerboard [i] [j];
+				fscanf（fp1，“％d ”，＆checkerboard [i] [j]）;
+				如果（checkerboard [i] [j]！= 0）
+				{
+					sign [i] [j] [ 0 ] = true ;
+					sign_count [i] [j] = 0 ;
+					国际象棋数-;
+				}
+			}
+		}
+		//棋盘上以填格子的数量，当它等于零的时候
+		国际象棋数=类型*类型;
+		变化= true ;
+		while（chess_count！= 0 &&更改）
+		{
+			//先出现棋盘不发生变化
+			变化= 假 ;
+			//寻找空缺位置
+			对于（int k = 0 ; k < 2 ; k ++）
+			{
+				对于（int i = 1 ; i <type + 1 ; i ++）
+				{
+					对于（int j = 1 ; j <type + 1 ; j ++）
+					{
+						如果（！sign [i] [j] [ 0 ]）
+						{
+							内部（i，j）;
+						}
+					}
+				}
+			}
+			检查（）;
+		}
+		//以只写方式打开文件
+		fp2 = fopen（输出名称，“ a ”）；
+		如果（fp2 == NULL）
+			返回 - 1 ;
+		
+		bool sign_complete = true；
+		对于（int i = 1 ; i <type + 1 ; i ++）
+		{
+			对于（int j = 1 ; j <type + 1 ; j ++）
+			{
+				如果（checkerboard [i] [j] == 0）
+				{
+					sign_complete = false ;
+				}
+				// cout << checkerboard [i] [j];
+				fprintf（fp2，“％d ”，Checkerboard [i] [j]）;
+				如果（j！=类型）
+				{
+					fprintf（fp2，“  ”）;
+					// cout <<'';
+				}
+			}
+			如果（n！= 1 && i ==类型&& sign_complete）
+			{
+				// cout <<“ \ n \ n”;  
+				fprintf（fp2，“ \ n \ n ”）;
+			}
+			否则， 如果（n！= 1 && i ==类型&&！sign_complete）
+			{
+				// cout <<“ \ n无法再确定地填入任何一格\ n因此棋盘中有空位\ n \ n”;
+				fprintf（fp2，“ \ n无法再确定地填入任何一格\ n因此棋盘中有空位\ n \ n ”）；
+			}
+			否则， 如果（n == 1 && i ==类型&& sign_complete）{}
+			否则 ，如果（N == 1 &&我==键入&&！sign_complete）
+			{
+				// cout <<“ \ n无法再确定地填入任何一格\ n因此棋盘中有空位”;
+				fprintf（fp2，“ \ n无法再确定地填入任何一格\ n因此棋盘中有空位”）；
+			}
+			其他
+			{
+				// cout <<“ \ n”;
+				fprintf（fp2，“ \ n ”）;
+			}
+		}
+		// cout <<'\ n'; //
+		// fprintf（fp2，“ \ n”）;
+		n--;
+		fclose（fp2）;
+	}
+	fclose（fp1）;
+}
