@@ -11,206 +11,247 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Random;
- 
+
+/**
+ * 
+ * 
+ * @author wei
+ */
 public class Sudoku {
 	
-	   /*
-     * åˆå§‹åŒ–å‘½ä»¤è¡Œå‚æ•°
-     */
+	//ÊäÈëÎÄ¼şµÄÃû×Ö
 	public static String inputFilename;
+	//ÊäÈëÎÄ¼şµÄÃû×Ö
 	public static String outputFilename;
+	//¼¸¹¬¸ñ
 	public static int m;
+	//ÊäÈëÎÄ¼şÖĞµÄ¾ØÕó¸öÊı
 	public static int n;
-    /**
-     * åˆ¤æ–­åœ¨ä¹å®«æ ¼ä¸­çš„åæ ‡(x,y)çš„ä½ç½®ä¸Šæ’å…¥valueï¼Œæ˜¯å¦ç¬¦åˆè§„åˆ™
-     */
-    public static Boolean legal(int a[][],int x, int y, int value,int m) {
- 
-        for (int i = 0; i < m; i++) {
-            //å¦‚æœåˆ—ä¸­æœ‰valueï¼Œåˆ™è¿”å›false
-            if (i != x && a[i][y] == value) {
-                return false;
-            }
-            //å¦‚æœè¡Œä¸­æœ‰valueï¼Œåˆ™è¿”å›false
-            if (i != y && a[x][i] == value) {
-                return false;
-            }
-        }
-        if(m==9){
-            //(minX,minY)æ˜¯(x,y)æ‰€å±å°ä¹å®«æ ¼çš„å·¦ä¸Šè§’çš„åæ ‡
-            int minX = x / 3 * 3;
-            int minY = y / 3 * 3;
-     
-            for (int i = minX; i < minX + 3; i++) {
-                for (int j = minY; j < minY + 3; j++) {
-                    //å¦‚æœå°ä¹å®«æ ¼ä¸­çš„é(x,y)çš„åæ ‡ä¸Šçš„å€¼ä¸ºvalueï¼Œè¿”å›false
-                    if (i != x && j != y && a[i][j] == value) {
-                        return false;
-                    }
-                }
-            }
-        }
-        if(m==4){
-            //(minX,minY)æ˜¯(x,y)æ‰€å±å°4å®«æ ¼çš„å·¦ä¸Šè§’çš„åæ ‡
-            int minX = x / 2 * 2;
-            int minY = y / 2 * 2;
-
-            for (int i = minX; i < minX + 2; i++) {
-                for (int j = minY; j < minY + 2; j++) {
-                    //å¦‚æœå°ä¹å®«æ ¼ä¸­çš„é(x,y)çš„åæ ‡ä¸Šçš„å€¼ä¸ºvalueï¼Œè¿”å›false
-                    if (i != x && j != y && a[i][j] == value) {
-                        return false;
-                    }
-                }
-            }
-        }
-        if(m==8){
-            //(minX,minY)æ˜¯(x,y)æ‰€å±å°8å®«æ ¼çš„å·¦ä¸Šè§’çš„åæ ‡
-            int minX = x / 4 * 4;
-            int minY = y / 2 * 2;
-     
-            for (int i = minX; i < minX + 4; i++) {
-                for (int j = minY; j < minY + 2; j++) {
-                    //å¦‚æœå°ä¹å®«æ ¼ä¸­çš„é(x,y)çš„åæ ‡ä¸Šçš„å€¼ä¸ºvalueï¼Œè¿”å›false
-                    if (i != x && j != y && a[i][j] == value) {
-                        return false;
-                    }
-                }
-            }
-        }
-        if(m==6){
-            //(minX,minY)æ˜¯(x,y)æ‰€å±å°å®«æ ¼çš„å·¦ä¸Šè§’çš„åæ ‡
-            int minX = x / 2 * 2;
-            int minY = y / 3 * 3;
-     
-            for (int i = minX; i < minX + 2; i++) {
-                for (int j = minY; j < minY + 3; j++) {
-                    //å¦‚æœå°ä¹å®«æ ¼ä¸­çš„é(x,y)çš„åæ ‡ä¸Šçš„å€¼ä¸ºvalueï¼Œè¿”å›false
-                    if (i != x && j != y && a[i][j] == value) {
-                        return false;
-                    }
-                }
-            }
-        }
-  
- 
-        return true;
-    }
-
-    //ç¬¬ä¸‰éƒ¨åˆ†ï¼Œæ˜¯é’ˆå¯¹ç¬¬äºŒéƒ¨åˆ†ç”Ÿæˆçš„æ•°ç‹¬æ¸¸æˆï¼Œä½¿ç”¨å›æº¯æ³•ï¼Œå®ç°å¯¹æ•°ç‹¬çš„è§£ç­”ã€‚
-    //shuDu[][]æ˜¯ç”¨æ¥å­˜æ”¾æ•°ç‹¬æ¸¸æˆçš„äºŒç»´æ•°ç»„ã€‚
+	//shuDu[][]´æ·ÅÊı¶ÀµÄ¶şÎ¬¾ØÕó
     public static int shuDu[][] = new int[9][9];
-    public static void setShuDu(int[][] shuDu) {
-        Sudoku.shuDu = shuDu;
-    }
- 
-    /**
-     * å›æº¯æ³•æ±‚è§£æ•°ç‹¬ï¼Œå‚è€ƒç¬¬ä¸€éƒ¨åˆ†ç”¨å›æº¯æ³•éšæœºç”Ÿæˆæ•°ç‹¬çš„è§£ç©ºé—´çš„ä»£ç 
-     * @param k
-     * @throws IOException 
-     */
-    public static void shuDu_solution(int k,int m) throws IOException {
-        if (k == (m*m)) {
-          String src= "E:\\360MoveData\\Users\\BoHang Wei\\Desktop\\output2.txt";
-            try{
-            FileWriter fw = new FileWriter(src,true);
-            for(int i=0;i<m;i++){
-                for(int j=0;j<m;j++){ 
-                	fw.write(shuDu[i][j]+" ");
-
-                }
-
-                fw.write("\r\n");
-            }
-            fw.write("\r\n");
-            fw.close(); // æœ€åè®°å¾—å…³é—­æ–‡ä»¶  
-            }
-            catch (Exception e) {  
-                e.printStackTrace();  
-            }  
-            return;
-        }
-        int x = k / m;
-        int y = k % m;
-        if (shuDu[x][y] == 0) {
-            for (int i = 1; i <= m; i++) {
-                shuDu[x][y] = i;
-                if (legal(shuDu,x, y, i,m)) {
-                    shuDu_solution(k + 1,m);
-                }
-            }
-            shuDu[x][y] = 0;
-        } else {
-            shuDu_solution(k + 1,m);
-        }
-    }
-
-    public static void loadArgs(String args[]){
-    	if(args.length>0&&args!=null){
-    		for(int i=0;i<args.length;i++){
-    			switch (args[i]) {
-				case "-i":
-					inputFilename = args[++i];
+	
+	
+	/**ÊäÈë²ÎÊı²¢»ñÈ¡²ÎÊıµÄº¯Êı*/
+	public static void inputArgs(String args[]) {
+		if(args.length>0&&args!=null) 
+		{
+			for(int i=0;i<args.length;i++)
+			{
+				switch(args[i])
+				{
+				case"-i":
+					inputFilename=args[++i];
 					break;
-				case "-o": 
-					outputFilename = args[++i];
+				case"-o":
+					outputFilename=args[++i];
 					break;
-				case "-m": 
+				case"-m":
 					m=Integer.valueOf(args[++i]);
 					break;
-				case "-n":
+				case"-n":
 					n=Integer.valueOf(args[++i]);
-				    break;
-
+					break;
 				default:
 					break;
 				}
-    		}
-    	}
+			}
+		}
+	}
+	
+	/**½«inputÎÄ¼şÖĞ¾ØÕó·ÅÈëShuDu[][]ÖĞ*/
+	public static void file_arryput_into_ShuDu(int[][] shuDu) {
+        Sudoku.shuDu = shuDu;
     }
-
-    public static void main(String[] args) throws IOException {
-    	
-    	loadArgs(args);
-    	int generateShuDu[][]=new int[10][10];   
+	
+	/**½«Êı¶ÀÎªÁãµÄÎ»ÖÃÌîÈëÊı×Ö£¬²¢Ğ´½øoutputÎÄ¼şÖĞ*/
+	public static void inside(int ini,int m)
+	{
+		//Ò»¸öÒ»¸öµÄ½øĞĞ¶ÁÈ¡
+		int x=ini/m;
+		int y=ini%m;
+		if(shuDu[x][y]==0) 
+		{
+			for(int i=1;i<=m;i++) 
+			{
+				shuDu[x][y]=i;
+				if(outside(shuDu,x, y, i,m))
+				{
+					inside(ini + 1,m);
+				}
+				shuDu[x][y] = 0;
+			}
+		}else {
+			inside(ini + 1,m);
+		}
+		
+		//¶ÁÍêÒ»¸ö¾ØÕóºóĞ´ÈëoutputÎÄ¼şÖĞ
+		if(ini==m*m)
+		{
+			String src="E:\\360MoveData\\Users\\BoHang Wei\\Desktop\\output2.txt";
+			try
+			{
+				FileWriter fw = new FileWriter(src,true);
+				for(int i=0;i<m;i++)
+				{
+					for(int j=0;j<m;j++) 
+					{
+						fw.write(shuDu[i][j]+" ");
+					}
+					 fw.write("\r\n");
+				}
+				fw.write("\r\n");
+				//¹Ø±ÕÎÄ¼ş
+	            fw.close();
+			}catch (Exception e) {  
+                e.printStackTrace();  
+            }  
+			return;
+		}
+	}
+	
+	/**µ±insideº¯ÊıÈ·¶¨Ã¿¸öÎª0µÄ¸ñ×ÓÊı×ÖÖ®ºóÅĞ¶Ï¸Ã¸ñ×ÓËù¶ÔÓ¦µÄĞĞºÍÁĞÊÇ·ñÓĞÖØ¸´µÄÊı×Ö£¬·µ»Øfalse*/
+	public static Boolean outside(int a[][],int x, int y, int value,int m)
+	{
+		for(int i=0;i<m;i++) 
+		{
+			if(i!=x&&a[i][y]==value)
+			{
+				return false;
+			}
+			if(i!=y&&a[x][i]==value)
+			{
+				return false;
+			}	
+		}
+		
+		if(m==4)
+		{
+			 //(divideX,divideY)ÊÇ(x,y)ËùÊôĞ¡4¹¬¸ñµÄ×óÉÏ½ÇµÄ×ø±ê
+			int divideX=x/2*2;
+			int divideY=y/2*2;
+			for (int i=divideX;i<divideX+2;i++)
+			{
+				for (int j=divideY;j<divideY+2;j++)
+				{
+					if (i != x && j != y && a[i][j] == value)
+					{
+                        return false;
+                    }
+				}
+			}	
+		}
+		
+		if(m==6)
+		{
+			 //(divideX,divideY)ÊÇ(x,y)ËùÊôĞ¡4¹¬¸ñµÄ×óÉÏ½ÇµÄ×ø±ê
+			int divideX=x/2*2;
+			int divideY=y/3*3;
+			for (int i=divideX;i<divideX+2;i++)
+			{
+				for (int j=divideY;j<divideY+3;j++)
+				{
+					if (i != x && j != y && a[i][j] == value)
+					{
+                        return false;
+                    }
+				}
+			}	
+		}
+		
+		if(m==8)
+		{
+			 //(divideX,divideY)ÊÇ(x,y)ËùÊôĞ¡4¹¬¸ñµÄ×óÉÏ½ÇµÄ×ø±ê
+			int divideX=x / 4 * 4;
+			int divideY=y / 2 * 2;
+			for (int i=divideX;i<divideX+4;i++)
+			{
+				for (int j=divideY;j<divideY+2;j++)
+				{
+					if (i != x && j != y && a[i][j] == value)
+					{
+                        return false;
+                    }
+				}
+			}	
+		}
+		
+		if(m==9)
+		{
+			 //(divideX,divideY)ÊÇ(x,y)ËùÊôĞ¡4¹¬¸ñµÄ×óÉÏ½ÇµÄ×ø±ê
+			int divideX=x / 3 * 3;
+			int divideY=y / 3 * 3;
+			for (int i=divideX;i<divideX+3;i++)
+			{
+				for (int j=divideY;j<divideY+3;j++)
+				{
+					if (i != x && j != y && a[i][j] == value)
+					{
+                        return false;
+                    }
+				}
+			}	
+		}
+		
+		return true;
+	}
+	
+	
+	
+	public static void main (String [] args) throws IOException
+	{
+		inputArgs(args);
+		int generateShuDu[][]=new int[10][10];   
 		File myFile = new File("E:\\360MoveData\\Users\\BoHang Wei\\Desktop\\input2.txt");
-		System.out.println("hhjjh");
+		//´ò¿ªÎÄ¼ş²¢¶ÁÈ¡
 		Reader reader = new InputStreamReader(new FileInputStream(myFile),"UTF-8"); 
 		
-		int tempchar;  
+		int accept_file_array;
+		//´Ó0¿ªÊ¼µÄĞĞÊı
 		int i=0;
+		//´Ó0¿ªÊ¼µÄÁĞÊı
 		int j=0;
-		    while ((tempchar = reader.read()) != -1) {  
-		    	
-		    if ( (((char) tempchar) != '\n') &&(((char) tempchar) != ' ')) {  
-		        if(i<m){
-		        	if(j<m){
-		        		if(tempchar!=13){
-		        			generateShuDu[i][j]=((char) tempchar)-48;
-		        			System.out.println("jkhasjdak");
-			        		j++;
+		//Ö±µ½¶Áµ½Ä©Î²£¨reader.read()¶Áµ½Ä©Î²·µ»Ø-1£©
+		while ((accept_file_array=reader.read())!=-1)
+		{
+			 //Ò»¸öÒ»¸ö¾ØÕóµÄÊäÈëºÍÊä³ö
+			if ( (((char) accept_file_array) != '\n') &&(((char) accept_file_array) != ' '))
+			{
+				if(i<m)
+				{
+					//¶ÔÁĞ½øĞĞ±éÀú
+		        	if(j<m)
+		        	{
+		        		if(accept_file_array!=13) 
+		        		{
+		        			//if(i==3&&j==0) {
+	        				//System.out.println((char) accept_file_array);
+	        			//}
+	        			generateShuDu[i][j]=((char) accept_file_array)-48;
+	        			//System.out.println(j);
+		        		j++;
 		        		}
-		        	}else{	
+		        	}else {
+		        		//System.out.println(i);
+		        		//¶ÔĞĞ½øĞĞ±éÀú	
 		        		i++;
 		        		j=0;
-		        		generateShuDu[i][j]=((char) tempchar)-48;
-		        		System.out.println("jkhasjdak");
+		        		generateShuDu[i][j]=((char)  accept_file_array)-48;
 		        	}
-		        }
+				}
+				//µ±±éÀúÍêÒ»¸ö¾ØÕóÖ®ºó
 		        if(i==m){
 		        	if(n!=0){
-			            setShuDu(generateShuDu);
-			        	System.out.println("jkhasjdak");
-			            shuDu_solution(0,m);
+		        		//½«inputÎÄ¼şÖĞµÄÅÌÃæ¶ÁÈëÊı×éshuDu[][]ÖĞ	
+		        		file_arryput_into_ShuDu(generateShuDu);
+			          //ÔËÓÃ»ØËİ·½·¨µÃµ½Ã¿Ò»¸ö¾ØÕóÖĞÎª0µÄÎ»ÖÃ¸ÃÌîÈëµÄÊıÖµ
+		        		inside(0,m);
 			            n--;
+			          //Ã¿¶ÁÍêÒ»¸ö¾ØÕó¾Í½«ĞĞºÍÁĞ£¨i¡¢j£©¹éÁã£¬Í¬Ê±¾ØÕóÊı¼õ1
 			            i=0;j=0;
 		        	}
-		        	
-		        }
-		    }  
-		}
+			    }
+		    }
+	     }
 		reader.close();
-        
-    }
-    
+	}
 }
