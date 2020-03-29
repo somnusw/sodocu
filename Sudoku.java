@@ -19,19 +19,19 @@ import java.util.Random;
  */
 public class Sudoku {
 	
-	//ÊäÈëÎÄ¼şµÄÃû×Ö
+	/**è¾“å…¥æ–‡ä»¶çš„åå­—*/
 	public static String inputFilename;
-	//ÊäÈëÎÄ¼şµÄÃû×Ö
+	/**è¾“å…¥æ–‡ä»¶çš„åå­—*/
 	public static String outputFilename;
-	//¼¸¹¬¸ñ
+	/**å‡ å®«æ ¼*/
 	public static int m;
-	//ÊäÈëÎÄ¼şÖĞµÄ¾ØÕó¸öÊı
+	/**è¾“å…¥æ–‡ä»¶ä¸­çš„çŸ©é˜µä¸ªæ•°*/
 	public static int n;
-	//shuDu[][]´æ·ÅÊı¶ÀµÄ¶şÎ¬¾ØÕó
+	/**shuDu[][]å­˜æ”¾æ•°ç‹¬çš„äºŒç»´çŸ©é˜µ*/
     public static int shuDu[][] = new int[9][9];
 	
 	
-	/**ÊäÈë²ÎÊı²¢»ñÈ¡²ÎÊıµÄº¯Êı*/
+	/**è¾“å…¥å‚æ•°å¹¶è·å–å‚æ•°çš„å‡½æ•°*/
 	public static void inputArgs(String args[]) {
 		if(args.length>0&&args!=null) 
 		{
@@ -58,15 +58,15 @@ public class Sudoku {
 		}
 	}
 	
-	/**½«inputÎÄ¼şÖĞ¾ØÕó·ÅÈëShuDu[][]ÖĞ*/
-	public static void file_arryput_into_ShuDu(int[][] shuDu) {
+	/**å°†inputæ–‡ä»¶ä¸­çŸ©é˜µæ”¾å…¥ShuDu[][]ä¸­*/
+	public static void fileArryputIntoShuDu(int[][] shuDu) {
         Sudoku.shuDu = shuDu;
     }
 	
-	/**½«Êı¶ÀÎªÁãµÄÎ»ÖÃÌîÈëÊı×Ö£¬²¢Ğ´½øoutputÎÄ¼şÖĞ*/
+	/**å°†æ•°ç‹¬ä¸ºé›¶çš„ä½ç½®å¡«å…¥æ•°å­—ï¼Œå¹¶å†™è¿›outputæ–‡ä»¶ä¸­*/
 	public static void inside(int ini,int m)
 	{
-		//Ò»¸öÒ»¸öµÄ½øĞĞ¶ÁÈ¡
+		//ä¸€ä¸ªä¸€ä¸ªçš„è¿›è¡Œè¯»å–
 		int x=ini/m;
 		int y=ini%m;
 		if(shuDu[x][y]==0) 
@@ -84,7 +84,7 @@ public class Sudoku {
 			inside(ini + 1,m);
 		}
 		
-		//¶ÁÍêÒ»¸ö¾ØÕóºóĞ´ÈëoutputÎÄ¼şÖĞ
+		//è¯»å®Œä¸€ä¸ªçŸ©é˜µåå†™å…¥outputæ–‡ä»¶ä¸­
 		if(ini==m*m)
 		{
 			String src="E:\\360MoveData\\Users\\BoHang Wei\\Desktop\\output2.txt";
@@ -100,7 +100,7 @@ public class Sudoku {
 					 fw.write("\r\n");
 				}
 				fw.write("\r\n");
-				//¹Ø±ÕÎÄ¼ş
+				//å…³é—­æ–‡ä»¶
 	            fw.close();
 			}catch (Exception e) {  
                 e.printStackTrace();  
@@ -109,7 +109,7 @@ public class Sudoku {
 		}
 	}
 	
-	/**µ±insideº¯ÊıÈ·¶¨Ã¿¸öÎª0µÄ¸ñ×ÓÊı×ÖÖ®ºóÅĞ¶Ï¸Ã¸ñ×ÓËù¶ÔÓ¦µÄĞĞºÍÁĞÊÇ·ñÓĞÖØ¸´µÄÊı×Ö£¬·µ»Øfalse*/
+	/**å½“insideå‡½æ•°ç¡®å®šæ¯ä¸ªä¸º0çš„æ ¼å­æ•°å­—ä¹‹ååˆ¤æ–­è¯¥æ ¼å­æ‰€å¯¹åº”çš„è¡Œå’Œåˆ—æ˜¯å¦æœ‰é‡å¤çš„æ•°å­—ï¼Œè¿”å›false*/
 	public static Boolean outside(int a[][],int x, int y, int value,int m)
 	{
 		for(int i=0;i<m;i++) 
@@ -126,7 +126,7 @@ public class Sudoku {
 		
 		if(m==4)
 		{
-			 //(divideX,divideY)ÊÇ(x,y)ËùÊôĞ¡4¹¬¸ñµÄ×óÉÏ½ÇµÄ×ø±ê
+			 //(divideX,divideY)æ˜¯(x,y)æ‰€å±å°4å®«æ ¼çš„å·¦ä¸Šè§’çš„åæ ‡
 			int divideX=x/2*2;
 			int divideY=y/2*2;
 			for (int i=divideX;i<divideX+2;i++)
@@ -143,7 +143,7 @@ public class Sudoku {
 		
 		if(m==6)
 		{
-			 //(divideX,divideY)ÊÇ(x,y)ËùÊôĞ¡4¹¬¸ñµÄ×óÉÏ½ÇµÄ×ø±ê
+			 //(divideX,divideY)æ˜¯(x,y)æ‰€å±å°4å®«æ ¼çš„å·¦ä¸Šè§’çš„åæ ‡
 			int divideX=x/2*2;
 			int divideY=y/3*3;
 			for (int i=divideX;i<divideX+2;i++)
@@ -160,7 +160,7 @@ public class Sudoku {
 		
 		if(m==8)
 		{
-			 //(divideX,divideY)ÊÇ(x,y)ËùÊôĞ¡4¹¬¸ñµÄ×óÉÏ½ÇµÄ×ø±ê
+			 //(divideX,divideY)æ˜¯(x,y)æ‰€å±å°4å®«æ ¼çš„å·¦ä¸Šè§’çš„åæ ‡
 			int divideX=x / 4 * 4;
 			int divideY=y / 2 * 2;
 			for (int i=divideX;i<divideX+4;i++)
@@ -177,7 +177,7 @@ public class Sudoku {
 		
 		if(m==9)
 		{
-			 //(divideX,divideY)ÊÇ(x,y)ËùÊôĞ¡4¹¬¸ñµÄ×óÉÏ½ÇµÄ×ø±ê
+			 //(divideX,divideY)æ˜¯(x,y)æ‰€å±å°4å®«æ ¼çš„å·¦ä¸Šè§’çš„åæ ‡
 			int divideX=x / 3 * 3;
 			int divideY=y / 3 * 3;
 			for (int i=divideX;i<divideX+3;i++)
@@ -202,51 +202,51 @@ public class Sudoku {
 		inputArgs(args);
 		int generateShuDu[][]=new int[10][10];   
 		File myFile = new File("E:\\360MoveData\\Users\\BoHang Wei\\Desktop\\input2.txt");
-		//´ò¿ªÎÄ¼ş²¢¶ÁÈ¡
+		//æ‰“å¼€æ–‡ä»¶å¹¶è¯»å–
 		Reader reader = new InputStreamReader(new FileInputStream(myFile),"UTF-8"); 
 		
-		int accept_file_array;
-		//´Ó0¿ªÊ¼µÄĞĞÊı
+		int acceptFileArray;
+		//ä»0å¼€å§‹çš„è¡Œæ•°
 		int i=0;
-		//´Ó0¿ªÊ¼µÄÁĞÊı
+		//ä»0å¼€å§‹çš„åˆ—æ•°
 		int j=0;
-		//Ö±µ½¶Áµ½Ä©Î²£¨reader.read()¶Áµ½Ä©Î²·µ»Ø-1£©
-		while ((accept_file_array=reader.read())!=-1)
+		//ç›´åˆ°è¯»åˆ°æœ«å°¾ï¼ˆreader.read()è¯»åˆ°æœ«å°¾è¿”å›-1ï¼‰
+		while ((acceptFileArray=reader.read())!=-1)
 		{
-			 //Ò»¸öÒ»¸ö¾ØÕóµÄÊäÈëºÍÊä³ö
-			if ( (((char) accept_file_array) != '\n') &&(((char) accept_file_array) != ' '))
+			 //ä¸€ä¸ªä¸€ä¸ªçŸ©é˜µçš„è¾“å…¥å’Œè¾“å‡º
+			if ( (((char) acceptFileArray) != '\n') &&(((char) acceptFileArray) != ' '))
 			{
 				if(i<m)
 				{
-					//¶ÔÁĞ½øĞĞ±éÀú
+					//å¯¹åˆ—è¿›è¡Œéå†
 		        	if(j<m)
 		        	{
-		        		if(accept_file_array!=13) 
+		        		if(acceptFileArray!=13) 
 		        		{
 		        			//if(i==3&&j==0) {
 	        				//System.out.println((char) accept_file_array);
 	        			//}
-	        			generateShuDu[i][j]=((char) accept_file_array)-48;
+	        			generateShuDu[i][j]=((char) acceptFileArray)-48;
 	        			//System.out.println(j);
 		        		j++;
 		        		}
 		        	}else {
 		        		//System.out.println(i);
-		        		//¶ÔĞĞ½øĞĞ±éÀú	
+		        		//å¯¹è¡Œè¿›è¡Œéå†	
 		        		i++;
 		        		j=0;
-		        		generateShuDu[i][j]=((char)  accept_file_array)-48;
+		        		generateShuDu[i][j]=((char)  acceptFileArray)-48;
 		        	}
 				}
-				//µ±±éÀúÍêÒ»¸ö¾ØÕóÖ®ºó
+				//å½“éå†å®Œä¸€ä¸ªçŸ©é˜µä¹‹å
 		        if(i==m){
 		        	if(n!=0){
-		        		//½«inputÎÄ¼şÖĞµÄÅÌÃæ¶ÁÈëÊı×éshuDu[][]ÖĞ	
-		        		file_arryput_into_ShuDu(generateShuDu);
-			          //ÔËÓÃ»ØËİ·½·¨µÃµ½Ã¿Ò»¸ö¾ØÕóÖĞÎª0µÄÎ»ÖÃ¸ÃÌîÈëµÄÊıÖµ
+		        		//å°†inputæ–‡ä»¶ä¸­çš„ç›˜é¢è¯»å…¥æ•°ç»„shuDu[][]ä¸­	
+		        		fileArryputIntoShuDu(generateShuDu);
+			          //è¿ç”¨å›æº¯æ–¹æ³•å¾—åˆ°æ¯ä¸€ä¸ªçŸ©é˜µä¸­ä¸º0çš„ä½ç½®è¯¥å¡«å…¥çš„æ•°å€¼
 		        		inside(0,m);
 			            n--;
-			          //Ã¿¶ÁÍêÒ»¸ö¾ØÕó¾Í½«ĞĞºÍÁĞ£¨i¡¢j£©¹éÁã£¬Í¬Ê±¾ØÕóÊı¼õ1
+			          //æ¯è¯»å®Œä¸€ä¸ªçŸ©é˜µå°±å°†è¡Œå’Œåˆ—ï¼ˆiã€jï¼‰å½’é›¶ï¼ŒåŒæ—¶çŸ©é˜µæ•°å‡1
 			            i=0;j=0;
 		        	}
 			    }
